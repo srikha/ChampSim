@@ -12,5 +12,5 @@ option=''
 
 mkdir -p results_2core
 
-(./bin/${binary} -warmup_instructions ${n_warm}000000 -simulation_instructions ${n_sim}000000 ${option} -traces ${TRACE_DIR}/${trace1}.trace.gz ${TRACE_DIR}/${trace2}.trace.gz &> results_2core/mix${num}-${binary}${option}.txt)
+(./bin/${binary} -warmup_instructions ${n_warm}0000 -simulation_instructions ${n_sim}0000 ${option} -traces ${TRACE_DIR}/${trace1}.trace.gz ${TRACE_DIR}/${trace2}.trace.gz &> results_2core/mix${num}-${binary}${option}.txt)
 #gdb --args ./bin/${binary} -warmup_instructions ${n_warm}000000 -simulation_instructions ${n_sim}000000 ${option} -traces ${TRACE_DIR}/${trace1}.trace.gz ${TRACE_DIR}/${trace2}.trace.gz
