@@ -1,4 +1,4 @@
-TRACE_DIR=/home/ubuntu/workspace/ChampSim/traces
+TRACE_DIR=/home/ubuntu/workspace/ChampSim-inclusive/traces
 binary=${1}
 n_warm=${2}
 n_sim=${3}

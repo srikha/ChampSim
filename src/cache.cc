@@ -21,6 +21,7 @@ void CACHE::handle_fill()
 
         // find victim
         uint32_t set = get_set(MSHR.entry[mshr_index].address), way;
+        
         if (cache_type == IS_LLC) {
             way = llc_find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
         }
@@ -116,10 +117,11 @@ void CACHE::handle_fill()
                 if (way >= 0)
                 {
                     uint64_t block_addr = block[set][way].address;
+                    block[set][way].core_id=block[set][way].cpu;
                     if (block_addr)
                     {
                         //cout << "handle fill fir se" << endl;
-                        evict_from_parent(block_addr, MSHR.entry[mshr_index].instr_id);
+                        evict_from_parent(block_addr, MSHR.entry[mshr_index].instr_id,block[set][way].core_id);
                         TOTAL_REPL++;
                     }
                 }
@@ -305,6 +307,7 @@ void CACHE::handle_writeback()
             else {
                 // find victim
                 uint32_t set = get_set(WQ.entry[index].address), way;
+                
                 if (cache_type == IS_LLC) {
                     way = llc_find_victim(writeback_cpu, WQ.entry[index].instr_id, set, block[set], WQ.entry[index].ip, WQ.entry[index].full_addr, WQ.entry[index].type);
                 }
@@ -375,9 +378,10 @@ void CACHE::handle_writeback()
                         if (way >= 0)
                         {
                             uint64_t block_addr = block[set][way].address;
+                            block[set][way].core_id=block[set][way].cpu;
                             if (block_addr)
                             {
-                                evict_from_parent(block_addr, WQ.entry[index].instr_id);
+                                evict_from_parent(block_addr, WQ.entry[index].instr_id,block[set][way].core_id);
                                 TOTAL_REPL++;
                             }
                         }
@@ -1405,10 +1409,11 @@ void CACHE::increment_WQ_FULL(uint64_t address)
     WQ.FULL++;
 }
 
-void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id)
+void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id,uint64_t core_id)
 {
     if (NAME != "LLC") {
     //cout << NAME << ", addr=" <<hex << block_addr << dec << endl;
+    //cout << 
     uint32_t set = get_set(block_addr);
     uint32_t way = -1;
 
@@ -1419,8 +1424,8 @@ void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id)
     for (way=0; way<NUM_WAY; way++) {
         if (block[set][way].valid && (block[set][way].tag == block_addr)) {
 
-            //block[set][way].valid = 0;
-            //cout << "found the way " << way << endl;
+            block[set][way].valid = 0;
+            cout << "found the way " << way << endl;
 
             break;
         }
@@ -1481,15 +1486,16 @@ void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id)
         BACK_HITS++;    
     }
     }
-    for (int i = 0; i < NUM_CPUS; i++) {
+    for (uint64_t i = 0; i < NUM_CPUS; i++) {
         if (upper_level_icache[i] == NULL)
             return;
         if (upper_level_dcache[i] == NULL)
             return;
         else
         {
-            upper_level_icache[i]->evict_from_parent(block_addr, instr_id);
-            upper_level_dcache[i]->evict_from_parent(block_addr, instr_id);
+            //cout << "Evict from Parent!" << "CORE_ID : " << core_id << "i : " << i << endl;
+            upper_level_icache[i]->evict_from_parent(block_addr, instr_id,core_id);
+            upper_level_dcache[i]->evict_from_parent(block_addr, instr_id,core_id);
         }
         //core_id=i;
     }
