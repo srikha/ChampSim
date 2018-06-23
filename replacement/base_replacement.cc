@@ -34,27 +34,27 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
     }
     
     // LRU victim
-    uint32_t j=NUM_WAY-1,a,x=1;//,wayf=1;
+    uint32_t n_way=NUM_WAY-1,a,way_found=1;
     if (way == NUM_WAY) {
-        if(NAME=="LLC"){
-            while(x==1){
+        if(NAME=="LLC"){ 
+            while(way_found==1){ 
                 for (way=0; way<NUM_WAY; way++) {
-                    if (block[set][way].lru == j) {
+                    if (block[set][way].lru == n_way) {
                         
                         if(cpu!=block[set][way].cpu){
                             cout << "Different Cores!" << endl;
                             cout << "Evicting CPU : " << cpu << "   Block CPU : " << block[set][way].cpu << endl;
                             a=evict_from_parent(block[set][way].address,instr_id,cpu);
-                            if(a==1){
-                                x=1;
-                                j--;
+                            if(a==1){ // Spy trying to evict
+                                way_found=1;
+                                n_way--;
                                 cout << "Checking the next block with LRU " << block[set][way].lru << endl << endl;
                                 break;
                             }
-                            if(a==0){
-                                x=0;
-                                j--;
-                                if(j!=15){
+                            if(a==0){ // Evicting it's own block
+                                way_found=0;
+                                n_way--;
+                                if(n_way!=15){
                                     cout << "It's own block " << block[set][way].lru << " is being evicted " << endl << endl;
                                     break;
                                 }
@@ -63,9 +63,9 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
                         else{
                             cout << "Same Core!" << endl;
                             cout << "It's own block " << block[set][way].lru << " is being evicted " << endl << endl;
-                            x=0;
-                            if(j!=15){
-                                x=0;
+                            way_found=0;
+                            if(n_way!=15){
+                                way_found=0;
                             }
                             break;
                         }
@@ -81,8 +81,8 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
                 }
                 if(block[set][way].lru==12){
                     cout << "Randomly Evicting  " << block[set][way].lru << endl << endl;
-                    x=1;
-                    j=15;
+                    way_found=1;
+                    n_way=15;
                     break;
                 }
             }
@@ -90,10 +90,8 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
         else{
             for (way=0; way<NUM_WAY; way++) {
                 if (block[set][way].lru == NUM_WAY-1) {
-                    
-                    //cout << NAME << "  LRU " << block[set][way].lru << " found at WAY " << way << endl << endl;;
-                    
-                    DP ( if (warmup_complete[cpu]) {
+					
+					DP ( if (warmup_complete[cpu]) {
                     cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
                     cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
                     cout << dec << " lru: " << block[set][way].lru << endl; });
