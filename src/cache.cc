@@ -114,17 +114,17 @@ void CACHE::handle_fill()
             // update replacement policy
             if (cache_type == IS_LLC) {
                 llc_update_replacement_state(fill_cpu, set, way, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].ip, block[set][way].full_addr, MSHR.entry[mshr_index].type, 0);
-                if (way >= 0)
+                /*if (way >= 0)
                 {
                     uint64_t block_addr = block[set][way].address;
-                    block[set][way].core_id=block[set][way].cpu;
+                    //block[set][way].core_id=block[set][way].cpu;
                     if (block_addr)
                     {
                         //cout << "handle fill fir se" << endl;
-                        evict_from_parent(block_addr, MSHR.entry[mshr_index].instr_id,block[set][way].core_id);
+                        evict_from_parent(block_addr, MSHR.entry[mshr_index].instr_id,block[set][way].cpu);
                         TOTAL_REPL++;
                     }
-                }
+                }*/
 
             }
             else
@@ -375,16 +375,16 @@ void CACHE::handle_writeback()
                     // update replacement policy
                     if (cache_type == IS_LLC) {
                         llc_update_replacement_state(writeback_cpu, set, way, WQ.entry[index].full_addr, WQ.entry[index].ip, block[set][way].full_addr, WQ.entry[index].type, 0);
-                        if (way >= 0)
+                        /*if (way >= 0)
                         {
                             uint64_t block_addr = block[set][way].address;
-                            block[set][way].core_id=block[set][way].cpu;
+                            //block[set][way].core_id=block[set][way].cpu; 
                             if (block_addr)
                             {
-                                evict_from_parent(block_addr, WQ.entry[index].instr_id,block[set][way].core_id);
+                                evict_from_parent(block_addr, WQ.entry[index].instr_id,block[set][way].cpu);
                                 TOTAL_REPL++;
                             }
-                        }
+                        }*/
 
                     }
                     else
@@ -1409,23 +1409,23 @@ void CACHE::increment_WQ_FULL(uint64_t address)
     WQ.FULL++;
 }
 
-void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id,uint64_t core_id)
+uint32_t CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id)
 {
     if (NAME != "LLC") {
+    //cout << "If NAME != LLC" << endl << endl;
     //cout << NAME << ", addr=" <<hex << block_addr << dec << endl;
-    //cout << 
     uint32_t set = get_set(block_addr);
     uint32_t way = -1;
 
     if (NUM_SET < set) {
         assert(0);
     }
-
+    //cout << "Cache type : " << NAME << "  NUM_WAY : " << NUM_WAY << endl;
     for (way=0; way<NUM_WAY; way++) {
         if (block[set][way].valid && (block[set][way].tag == block_addr)) {
 
-            block[set][way].valid = 0;
-            cout << "found the way " << way << endl;
+            //block[set][way].valid = 0; //Invalidating the block
+            //cout << "found the way " << way << endl;
 
             break;
         }
@@ -1483,20 +1483,33 @@ void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id,uint64_t co
 
     int hit = invalidate_entry(block_addr);
     if (hit != -1){
-        BACK_HITS++;    
+        BACK_HITS++;
+        
     }
     }
+    
     for (uint64_t i = 0; i < NUM_CPUS; i++) {
-        if (upper_level_icache[i] == NULL)
-            return;
-        if (upper_level_dcache[i] == NULL)
-            return;
-        else
-        {
-            //cout << "Evict from Parent!" << "CORE_ID : " << core_id << "i : " << i << endl;
-            upper_level_icache[i]->evict_from_parent(block_addr, instr_id,core_id);
-            upper_level_dcache[i]->evict_from_parent(block_addr, instr_id,core_id);
+        if(core_id==i){
+            if (upper_level_icache[i] == NULL)
+                return NULL;
+            if (upper_level_dcache[i] == NULL)
+                return NULL;
+            else
+            {
+                upper_level_icache[i]->evict_from_parent(block_addr, instr_id,i);
+                upper_level_dcache[i]->evict_from_parent(block_addr, instr_id,i);
+                cout << "Evicting from " << NAME << " with CPU " << i << endl << endl;
+                
+                //break;
+                return 0;
+                //continue;
+            }
         }
-        //core_id=i;
+        else{
+            cout << "Spy trying to Evict from " << i << endl;
+            cout << "Hence it doesn't evict!" << endl << endl;
+            return 1;
+            //continue;
+        }
     }
 }

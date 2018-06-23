@@ -19,7 +19,6 @@ void CACHE::update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, u
 uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {
     uint32_t way = 0;
-    //uint32_t b=block[set][way].lru;
 
     // fill invalid line first
     for (way=0; way<NUM_WAY; way++) {
@@ -33,49 +32,74 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
             break;
         }
     }
-    uint32_t a[4], // Array storing blocks present in private cache of victim
-             nway=NUM_WAY-1, // LRU 
-             wayf=0, 
-             max=NUM_WAY<4?NUM_WAY-3:NUM_WAY-5; // Max limit till lru-4
+    
     // LRU victim
+    uint32_t j=NUM_WAY-1,a,x=1;//,wayf=1;
     if (way == NUM_WAY) {
-        while(!wayf) { // Checks whether the way is found
-            for (way=0; way<NUM_WAY; way++) {
-                if (block[set][way].lru == nway) {
-
-                    if(cpu==block[set][way].cpu){ // Same cpu trying to evict the block
-
-                        cout << "Same Core!" << "   Way : " << way << "     Requesting CPU: " << cpu << "    Evicted block's CPU: " << block[set][way].cpu << " LRU : " << block[set][way].lru << endl;
-                        evict_from_parent(block[set][way].address,instr_id,block[set][way].cpu);
+        if(NAME=="LLC"){
+            while(x==1){
+                for (way=0; way<NUM_WAY; way++) {
+                    if (block[set][way].lru == j) {
                         
-                        wayf=1; // Found the block to be evicted
-                        break;
-                    }
-                    
-                    else { // No Eviction of block if owner of block isn't evicting
-                        cout << "Different Cores!" << "     Way : " << way << "   Requesting CPU: " << cpu << "    Evicted block's CPU: " << block[set][way].cpu << " LRU : " << block[set][way].lru << endl;
-                        a[NUM_WAY-nway-1]=way; // Stores the blocks that are present in private cache of victim
-                        wayf=0; // To check for a block in next iteration
-                        break;
+                        if(cpu!=block[set][way].cpu){
+                            cout << "Different Cores!" << endl;
+                            cout << "Evicting CPU : " << cpu << "   Block CPU : " << block[set][way].cpu << endl;
+                            a=evict_from_parent(block[set][way].address,instr_id,cpu);
+                            if(a==1){
+                                x=1;
+                                j--;
+                                cout << "Checking the next block with LRU " << block[set][way].lru << endl << endl;
+                                break;
+                            }
+                            if(a==0){
+                                x=0;
+                                j--;
+                                if(j!=15){
+                                    cout << "It's own block " << block[set][way].lru << " is being evicted " << endl << endl;
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            cout << "Same Core!" << endl;
+                            cout << "It's own block " << block[set][way].lru << " is being evicted " << endl << endl;
+                            x=0;
+                            if(j!=15){
+                                x=0;
+                            }
+                            break;
+                        }
+                        
+                        DP ( if (warmup_complete[cpu]) {
+                        cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
+                        cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
+                        cout << dec << " lru: " << block[set][way].lru << endl; });
+        
+                        //break;
                     }
 
-            
-                            DP ( if (warmup_complete[cpu]) {
-                            cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
-                            cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
-                            cout << dec << " lru: " << block[set][way].lru << endl; });
-            
-                            //break;
-                     
+                }
+                if(block[set][way].lru==12){
+                    cout << "Randomly Evicting  " << block[set][way].lru << endl << endl;
+                    x=1;
+                    j=15;
+                    break;
                 }
             }
-            nway--; // To check next block to evict
-            if (nway==max) // First 4 lru blocks are present in private cache
-            {
-                wayf=1; // Found the block to be evicted
-                way=a[2]; // Evicts the First of the four blocks
-                cout << " Random Eviction!" << "    Way : " << way << "     LRU of Evicted Block : " << block[set][way].lru << endl;
-                evict_from_parent(block[set][way].address,instr_id,block[set][way].cpu);
+        }
+        else{
+            for (way=0; way<NUM_WAY; way++) {
+                if (block[set][way].lru == NUM_WAY-1) {
+                    
+                    //cout << NAME << "  LRU " << block[set][way].lru << " found at WAY " << way << endl << endl;;
+                    
+                    DP ( if (warmup_complete[cpu]) {
+                    cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
+                    cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
+                    cout << dec << " lru: " << block[set][way].lru << endl; });
+    
+                    break;
+                }
             }
         }
     }

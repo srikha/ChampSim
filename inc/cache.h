@@ -173,8 +173,9 @@ class CACHE : public MEMORY {
 
     void return_data(PACKET *packet),
          operate(),
-         increment_WQ_FULL(uint64_t address),
-         evict_from_parent(uint64_t block_addr, uint64_t instr_id,uint64_t core_id);
+         increment_WQ_FULL(uint64_t address);
+         
+    uint32_t evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id);
 
     uint32_t get_occupancy(uint8_t queue_type, uint64_t address),
              get_size(uint8_t queue_type, uint64_t address);
