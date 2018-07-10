@@ -121,7 +121,7 @@ void CACHE::handle_fill()
                     if (block_addr)
                     {
                         //cout << "handle fill fir se" << endl;
-                        evict_from_parent(block_addr, MSHR.entry[mshr_index].instr_id,block[set][way].cpu);
+                        evict_from_parent(block_addr, MSHR.entry[mshr_index].instr_id);
                         TOTAL_REPL++;
                     }
                 }*/
@@ -381,7 +381,7 @@ void CACHE::handle_writeback()
                             //block[set][way].core_id=block[set][way].cpu; 
                             if (block_addr)
                             {
-                                evict_from_parent(block_addr, WQ.entry[index].instr_id,block[set][way].cpu);
+                                evict_from_parent(block_addr, WQ.entry[index].instr_id);
                                 TOTAL_REPL++;
                             }
                         }*/
@@ -1409,7 +1409,114 @@ void CACHE::increment_WQ_FULL(uint64_t address)
     WQ.FULL++;
 }
 
-uint32_t CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id)
+/*uint32_t CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id)
+{
+    if (NAME != "LLC") {
+    //cout << NAME << ", addr=" <<hex << block_addr << dec << endl;
+    uint32_t set = get_set(block_addr);
+    int way = -1;
+
+    if (NUM_SET < set) {
+        assert(0);
+    }
+
+    for (way=0; way<NUM_WAY; way++) {
+        if (block[set][way].valid && (block[set][way].tag == block_addr)) {
+
+            //block[set][way].valid = 0;
+            //cout << "found the way " << way << endl;
+
+            break;
+        }
+    }
+
+
+    uint32_t fill_cpu = (MSHR.next_fill_index == MSHR_SIZE) ? NUM_CPUS : MSHR.entry[MSHR.next_fill_index].cpu;
+    if (MSHR.next_fill_cycle <= current_core_cycle[fill_cpu]) {
+#ifdef SANITY_CHECK
+        if (MSHR.next_fill_index >= MSHR.SIZE)
+            assert(0);
+#endif
+    uint32_t mshr_index = MSHR.next_fill_index;
+
+        if (block[set][way].dirty) {
+
+            // check if the lower level WQ has enough room to keep this writeback request
+            if (lower_level) {
+                if (lower_level->get_occupancy(2, block[set][way].address) == lower_level->get_size(2, block[set][way].address)) {
+
+                    // lower level WQ is full, cannot replace this victim
+                    cout << "It happened" << endl;
+                    lower_level->increment_WQ_FULL(block[set][way].address);
+                    STALL[MSHR.entry[mshr_index].type]++;
+
+                }
+                else { 
+                    PACKET writeback_packet;
+                    
+                    //writeback_packet = (PACKET*)malloc(sizeof(PACKET));
+                    writeback_packet.fill_level = fill_level << 1;
+                    writeback_packet.cpu = fill_cpu;
+                    writeback_packet.address = block[set][way].address;
+                    writeback_packet.full_addr = block[set][way].full_addr;
+                    writeback_packet.data = block[set][way].data;
+                    writeback_packet.instr_id = MSHR.entry[mshr_index].instr_id;
+                    writeback_packet.ip = 0; // writeback does not have ip
+                    writeback_packet.type = WRITEBACK;
+                    writeback_packet.event_cycle = current_core_cycle[fill_cpu];
+
+
+                    lower_level->add_wq(&writeback_packet);
+                }
+            }
+#ifdef SANITY_CHECK
+            else {
+                // sanity check
+                if (cache_type != IS_STLB)
+                    assert(0);
+            }
+#endif
+        }
+
+    } 
+
+    int hit = invalidate_entry(block_addr);
+    if (hit != -1){
+        BACK_HITS++;    
+        cout << "BACK HITS : " << BACK_HITS << endl << endl;
+    }
+    }
+    for (int i = 0; i < NUM_CPUS; i++) {
+        if(i==core_id){
+            if (upper_level_icache[i] == NULL)
+                return NULL;
+            if (upper_level_dcache[i] == NULL)
+                return NULL;
+            else
+            {
+                upper_level_icache[i]->evict_from_parent(block_addr, instr_id, core_id);
+                upper_level_dcache[i]->evict_from_parent(block_addr, instr_id, core_id);
+                return 0;
+            }
+            continue;
+        }
+        else{
+            if (upper_level_icache[i] == NULL)
+                return NULL;
+            if (upper_level_dcache[i] == NULL)
+                return NULL;
+            else
+            {
+                upper_level_icache[i]->evict_from_parent(block_addr, instr_id, core_id);
+                upper_level_dcache[i]->evict_from_parent(block_addr, instr_id, core_id);
+                return 1;
+            }
+        }
+        continue;
+    }
+}*/
+
+void CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id)
 {
     if (NAME != "LLC") {
     //cout << "If NAME != LLC" << endl << endl;
@@ -1484,32 +1591,20 @@ uint32_t CACHE::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64
     int hit = invalidate_entry(block_addr);
     if (hit != -1){
         BACK_HITS++;
-        
+        //cout << "BACK HITS : " << BACK_HITS << endl;
     }
     }
     
-    for (uint64_t i = 0; i < NUM_CPUS; i++) {
-        if(core_id==i){
-            if (upper_level_icache[i] == NULL)
-                return NULL;
-            if (upper_level_dcache[i] == NULL)
-                return NULL;
-            else
-            {
-                upper_level_icache[i]->evict_from_parent(block_addr, instr_id,i);
-                upper_level_dcache[i]->evict_from_parent(block_addr, instr_id,i);
-                cout << "Evicting from " << NAME << " with CPU " << i << endl << endl;
-                
-                //break;
-                return 0;
-                //continue;
-            }
-        }
-        else{
-            cout << "Spy trying to Evict from " << i << endl;
-            cout << "Hence it doesn't evict!" << endl << endl;
-            return 1;
-            //continue;
+    for (int i = 0; i < NUM_CPUS; i++) {
+        if (upper_level_icache[i] == NULL)
+            return;
+        if (upper_level_dcache[i] == NULL)
+            return;
+        else
+        {
+            //cout << "Evicting from " << core_id << endl;
+            upper_level_icache[i]->evict_from_parent(block_addr, instr_id,core_id);
+            upper_level_dcache[i]->evict_from_parent(block_addr, instr_id,core_id);
         }
     }
 }

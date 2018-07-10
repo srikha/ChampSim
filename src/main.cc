@@ -64,6 +64,9 @@ void print_roi_stats(uint32_t cpu, CACHE *cache)
 
     cout << cache->NAME;
     cout << " BACK HITS: " << cache->BACK_HITS<< endl;
+    
+    cout << cache->NAME;
+    cout << " CROSS CORE: " << cache->CROSS<< endl;
 
     cout << cache->NAME;
     cout << " TOTAL REPL: " << cache->TOTAL_REPL<< endl;

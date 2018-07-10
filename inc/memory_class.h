@@ -32,7 +32,7 @@ class MEMORY {
     virtual void return_data(PACKET *packet) = 0;
     virtual void operate() = 0;
     virtual void increment_WQ_FULL(uint64_t address) = 0;
-    virtual uint32_t evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id) = 0;
+    virtual void evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id) = 0;
     virtual uint32_t get_occupancy(uint8_t queue_type, uint64_t address) = 0;
     virtual uint32_t get_size(uint8_t queue_type, uint64_t address) = 0;
 

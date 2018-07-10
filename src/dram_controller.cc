@@ -540,7 +540,7 @@ void MEMORY_CONTROLLER::return_data(PACKET *packet)
 
 }
 
-uint32_t MEMORY_CONTROLLER::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id)
+void MEMORY_CONTROLLER::evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id)
 {
 
 }

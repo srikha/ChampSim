@@ -1,0 +1,191 @@
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 0
+Simulation Instructions: 10000000
+Number of CPUs: 2
+LLC sets: 4096
+LLC ways: 16
+Off-chip DRAM Size: 8192 MB Channels: 2 Width: 64-bit Data Rate: 1600 MT/s
+
+CPU 0 runs /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+CPU 1 runs /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+CPU 0 Bimodal branch predictor
+CPU 1 Bimodal branch predictor
+
+Warmup complete CPU 0 instructions: 1 cycles: 9 (Simulation time: 0 hr 0 min 0 sec) 
+Warmup complete CPU 1 instructions: 1 cycles: 9 (Simulation time: 0 hr 0 min 0 sec) 
+
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+Heartbeat CPU 1 instructions: 10000001 cycles: 13687826 heartbeat IPC: 0.730576 cumulative IPC: 0.730577 (Simulation time: 0 hr 0 min 50 sec) 
+Finished CPU 1 instructions: 10000000 cycles: 13687817 cumulative IPC: 0.730577 (Simulation time: 0 hr 0 min 50 sec) 
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 1 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/attack30.trace.gz
+*** Reached end of trace for Core: 0 Repeating trace: /home/ubuntu/workspace/ChampSim-inclusive/traces/gpg_decrypt.trace.gz
+Heartbeat CPU 0 instructions: 10000003 cycles: 19143653 heartbeat IPC: 0.522367 cumulative IPC: 0.522367 (Simulation time: 0 hr 1 min 10 sec) 
+Finished CPU 0 instructions: 10000002 cycles: 19143644 cumulative IPC: 0.522367 (Simulation time: 0 hr 1 min 10 sec) 
+
+CPU 0 Branch Prediction Accuracy: 94.1472% MPKI: 8.6402
+
+CPU 1 Branch Prediction Accuracy: 95.977% MPKI: 6.37071
+
+ChampSim completed all CPUs
+
+Total Simulation Statistics (not including warmup)
+
+CPU 0 cumulative IPC: 0.522367 instructions: 10000002 cycles: 19143644
+L1D TOTAL     ACCESS:    2890565  HIT:    2831836  MISS:      58729
+L1D LOAD      ACCESS:    1308625  HIT:    1269069  MISS:      39556
+L1D RFO       ACCESS:    1581940  HIT:    1562767  MISS:      19173
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I TOTAL     ACCESS:    2961625  HIT:    2925442  MISS:      36183
+L1I LOAD      ACCESS:    2961625  HIT:    2925442  MISS:      36183
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L2C TOTAL     ACCESS:     117206  HIT:      52311  MISS:      64895
+L2C LOAD      ACCESS:      75739  HIT:      26494  MISS:      49245
+L2C RFO       ACCESS:      19173  HIT:       3627  MISS:      15546
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:      22294  HIT:      22190  MISS:        104
+LLC TOTAL     ACCESS:      80982  HIT:      74219  MISS:       6763
+LLC LOAD      ACCESS:      49245  HIT:      44153  MISS:       5092
+LLC RFO       ACCESS:      15546  HIT:      13875  MISS:       1671
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:      16191  HIT:      16191  MISS:          0
+
+CPU 1 cumulative IPC: 0.734577 instructions: 14062484 cycles: 19143644
+L1D TOTAL     ACCESS:    3270268  HIT:    3163635  MISS:     106633
+L1D LOAD      ACCESS:    2051820  HIT:    1964204  MISS:      87616
+L1D RFO       ACCESS:    1218448  HIT:    1199431  MISS:      19017
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I TOTAL     ACCESS:    2951511  HIT:    2946453  MISS:       5058
+L1I LOAD      ACCESS:    2951511  HIT:    2946453  MISS:       5058
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L2C TOTAL     ACCESS:     132016  HIT:      64480  MISS:      67536
+L2C LOAD      ACCESS:      92674  HIT:      36973  MISS:      55701
+L2C RFO       ACCESS:      19017  HIT:       7336  MISS:      11681
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:      20325  HIT:      20171  MISS:        154
+LLC TOTAL     ACCESS:      79238  HIT:      73322  MISS:       5916
+LLC LOAD      ACCESS:      55701  HIT:      50818  MISS:       4883
+LLC RFO       ACCESS:      11681  HIT:      10648  MISS:       1033
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:      11856  HIT:      11856  MISS:          0
+
+Region of Interest Statistics
+
+CPU 0 cumulative IPC: 0.522367 instructions: 10000002 cycles: 19143644
+L1D TOTAL     ACCESS:    2890565  HIT:    2831836  MISS:      58729
+L1D LOAD      ACCESS:    1308625  HIT:    1269069  MISS:      39556
+L1D RFO       ACCESS:    1581940  HIT:    1562767  MISS:      19173
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D BACK HITS: 0
+L1D CROSS CORE: 0
+L1D TOTAL REPL: 0
+L1I TOTAL     ACCESS:    2961625  HIT:    2925442  MISS:      36183
+L1I LOAD      ACCESS:    2961625  HIT:    2925442  MISS:      36183
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I BACK HITS: 0
+L1I CROSS CORE: 0
+L1I TOTAL REPL: 0
+L2C TOTAL     ACCESS:     117206  HIT:      52311  MISS:      64895
+L2C LOAD      ACCESS:      75739  HIT:      26494  MISS:      49245
+L2C RFO       ACCESS:      19173  HIT:       3627  MISS:      15546
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:      22294  HIT:      22190  MISS:        104
+L2C PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L2C BACK HITS: 0
+L2C CROSS CORE: 0
+L2C TOTAL REPL: 0
+LLC TOTAL     ACCESS:      80982  HIT:      74219  MISS:       6763
+LLC LOAD      ACCESS:      49245  HIT:      44153  MISS:       5092
+LLC RFO       ACCESS:      15546  HIT:      13875  MISS:       1671
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:      16191  HIT:      16191  MISS:          0
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+LLC BACK HITS: 0
+LLC CROSS CORE: 0
+LLC TOTAL REPL: 0
+Major fault: 0 Minor fault: 321
+
+CPU 1 cumulative IPC: 0.730577 instructions: 10000000 cycles: 13687817
+L1D TOTAL     ACCESS:    2323007  HIT:    2247834  MISS:      75173
+L1D LOAD      ACCESS:    1459453  HIT:    1397469  MISS:      61984
+L1D RFO       ACCESS:     863554  HIT:     850365  MISS:      13189
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D BACK HITS: 0
+L1D CROSS CORE: 0
+L1D TOTAL REPL: 0
+L1I TOTAL     ACCESS:    2096050  HIT:    2092565  MISS:       3485
+L1I LOAD      ACCESS:    2096050  HIT:    2092565  MISS:       3485
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I BACK HITS: 0
+L1I CROSS CORE: 0
+L1I TOTAL REPL: 0
+L2C TOTAL     ACCESS:      92807  HIT:      45219  MISS:      47588
+L2C LOAD      ACCESS:      65468  HIT:      26062  MISS:      39406
+L2C RFO       ACCESS:      13189  HIT:       5106  MISS:       8083
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:      14150  HIT:      14051  MISS:         99
+L2C PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L2C BACK HITS: 0
+L2C CROSS CORE: 0
+L2C TOTAL REPL: 0
+LLC TOTAL     ACCESS:      55678  HIT:      49762  MISS:       5916
+LLC LOAD      ACCESS:      39406  HIT:      34523  MISS:       4883
+LLC RFO       ACCESS:       8083  HIT:       7050  MISS:       1033
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:       8189  HIT:       8189  MISS:          0
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+LLC BACK HITS: 0
+LLC CROSS CORE: 0
+LLC TOTAL REPL: 0
+Major fault: 0 Minor fault: 210
+
+DRAM Statistics
+ CHANNEL 0
+ RQ ROW_BUFFER_HIT:       4123  ROW_BUFFER_MISS:       2200
+ DBUS_CONGESTED:       1603
+ WQ ROW_BUFFER_HIT:          0  ROW_BUFFER_MISS:          0  FULL:          0
+
+ CHANNEL 1
+ RQ ROW_BUFFER_HIT:       4108  ROW_BUFFER_MISS:       2247
+ DBUS_CONGESTED:       1603
+ WQ ROW_BUFFER_HIT:          0  ROW_BUFFER_MISS:          0  FULL:          0
+
+ AVG_CONGESTED_CYCLE: 9

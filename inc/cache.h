@@ -97,7 +97,7 @@ class CACHE : public MEMORY {
              pf_fill;
 
     // back hit stats
-    uint64_t BACK_HITS, TOTAL_REPL;
+    uint64_t BACK_HITS, CROSS, TOTAL_REPL;
 
     // queues
     PACKET_QUEUE WQ{NAME + "_WQ", WQ_SIZE}, // write queue
@@ -156,6 +156,7 @@ class CACHE : public MEMORY {
         pf_fill = 0;
 
         BACK_HITS = 0;
+        CROSS=0;
         TOTAL_REPL = 0;
     };
 
@@ -175,7 +176,7 @@ class CACHE : public MEMORY {
          operate(),
          increment_WQ_FULL(uint64_t address);
          
-    uint32_t evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id);
+    void evict_from_parent(uint64_t block_addr, uint64_t instr_id, uint64_t core_id);
 
     uint32_t get_occupancy(uint8_t queue_type, uint64_t address),
              get_size(uint8_t queue_type, uint64_t address);
